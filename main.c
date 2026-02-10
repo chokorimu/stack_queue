@@ -9,7 +9,7 @@ struct node {
     struct node* next;
 };
 
-void allocate(struct node** front, int new_size) {
+void enqueue(struct node** front, int new_size) {
     for(int i=0; i<new_size; i++) {
         if(*front == NULL) {
             *front = malloc(sizeof(**front));
@@ -39,6 +39,7 @@ void allocate(struct node** front, int new_size) {
 int main() {
     struct node* front = NULL;
 
-    allocate(&front, 10);
+    enqueue(&front, 10);
+    enqueue(&front, 5);
     return 0;
 }
