@@ -15,18 +15,17 @@ void enqueue(struct node** front, int newValue) {
     newNode->value = newValue;
     newNode->isHead = false;
     newNode->isTail = true;
+    newNode->next = NULL;
 
     if(*front == NULL) {
         (*front) = newNode;
         (*front)->isHead = true;
         (*front)->isTail = false;
-        (*front)->next = NULL;
         return;
     }
     
     if((*front)->next == NULL) {
         (*front)->next = newNode;
-        (*front)->next->next = NULL;
         return;
     }
 
@@ -66,20 +65,38 @@ void dequeue(struct node** front) {
         free(*front);
         return;
     }
-    
-    if((*front)->isTail == true) {
-        (*front)->isTail = false;
-        return;
-    }
-    
+
+    bool doesTailExist;
     struct node* cursor = *front;
-    while(cursor->next->isTail != true) {
+    while(cursor->isHead != true && cursor->next == NULL) {
+        if(cursor->isTail == true) {
+            doesTailExist = true;
+        }
         cursor=cursor->next;
     }
     
-    if(cursor->isHead != true) {
-        cursor->isTail = true;
+    if(cursor->next == NULL) {
+        if(doesTailExist == true) {
+            (*front)->isHead = true;
+            (*front)->isTail = false;
+            cursor->isHead = false;
+            return;
+        }
+
+        struct node* grimReaper = *front;
+        while((*front)->next != NULL) {
+            while(grimReaper->next != NULL) {
+                grimReaper=grimReaper->next;
+            }
+            free(grimReaper->next);
+            grimReaper->next = NULL;
+            grimReaper=*front;
+        }
+        free(*front);
+        return;
     }
+    cursor->isHead = false;
+    cursor->next->isHead = true;
     cursor->next->isTail = false;
 }
 
