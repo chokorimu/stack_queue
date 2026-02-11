@@ -5,69 +5,94 @@
 struct node {
     int value;
     bool isHead;
-    bool isNodeEmpty;
+    bool isTail;
     struct node* next;
 };
 
 void enqueue(struct node** front, int newValue) {
+    struct node* newNode;
+    newNode = malloc(sizeof(*newNode));
+    newNode->value = newValue;
+    newNode->isHead = false;
+    newNode->isTail = true;
+
     if(*front == NULL) {
-        *front = malloc(sizeof(**front));
-        (*front)->value = newValue;
+        (*front) = newNode;
         (*front)->isHead = true;
-        (*front)->isNodeEmpty = false;
+        (*front)->isTail = false;
         (*front)->next = NULL;
+        return;
+    }
+    
+    if((*front)->next == NULL) {
+        (*front)->next = newNode;
+        (*front)->next->next = NULL;
         return;
     }
 
     struct node* cursor = *front;
-    while(cursor->next != NULL) {
+    while(cursor->isTail != true) {
         cursor=cursor->next;
     }
 
-    struct node* newNode;
-    newNode = malloc(sizeof(**front));
-    newNode->value = newValue;
-    newNode->isHead = false;
-    newNode->isNodeEmpty = false;
-    newNode->next = NULL;
-    cursor->next = newNode;
+    if(cursor->next == NULL) {
+        cursor->isTail = false;
+        cursor->next = newNode;
+        cursor->next->next = NULL;
+        return;
     }
+    
+    if(cursor->next->isHead == true) {
+        newNode->next = cursor->next;
+        cursor->isTail = false;
+        cursor->next = newNode;
+        return;   
+    }
+
+    else {
+        cursor->isTail = false;
+        cursor->next->value = newValue;
+        cursor->next->isTail = true;
+        return;
+    }
+}
 
 void dequeue(struct node** front) {
     if(*front == NULL) {
         return;
     }
-    
+   
     if((*front)->next == NULL) {
         free(*front);
         return;
     }
     
+    if((*front)->isTail == true) {
+        (*front)->isTail = false;
+        return;
+    }
+    
     struct node* cursor = *front;
-    while(cursor->isHead != true) {
+    while(cursor->next->isTail != true) {
         cursor=cursor->next;
     }
     
-    if(cursor->next == NULL) {
-        (*front)->isHead = true;
-        cursor->isNodeEmpty = true;
-        cursor->isHead = false;
-        return;
+    if(cursor->isHead != true) {
+        cursor->isTail = true;
     }
-    cursor->isHead = false;
-    cursor->isNodeEmpty = true;
-    cursor->next->isHead = true;
+    cursor->next->isTail = false;
 }
 
 void iterate(struct node** front) {
     if(*front == NULL) {
         return;
     }
+
     if((*front)->next == NULL) {
-        printf("%d\n", (*front)->value);
+        printf("%d --> head\n", (*front)->value);
         return;
     }
-    
+
     struct node* cursor = *front;
     while(cursor != NULL) {
         if(cursor->isHead == true) {
@@ -75,26 +100,36 @@ void iterate(struct node** front) {
             
         }
 
-        else if(cursor->isNodeEmpty == false && (cursor->next == NULL || cursor->next->isHead == true || cursor->next->isNodeEmpty == true)) {
+        else if(cursor->isTail == true) {
             printf("%d --> tail\n", cursor->value);
             
         }
 
-        else if(cursor->isNodeEmpty == false) {
-            printf("%d\n", cursor->value);
-        }
-        
         else {
-            printf("%d (empty)\n", cursor->value);
+            printf("%d\n", cursor->value);
         }
         cursor=cursor->next;
     }
 }
 
 bool isFull(struct node** front) {
+    if(*front == NULL) {
+        return false;
+    }
+
+    if((*front)->next == NULL) {
+        return true;
+    }
+
     struct node* cursor = *front;
-    while(cursor->next != )
-    return()
+    while(cursor->isTail != true) {
+        cursor=cursor->next;
+    }
+
+    if(cursor->next == NULL || cursor->next->isHead == true) {
+        return true;
+    }
+    return false;
 }
 
 bool isEmpty(struct node** front) {
@@ -103,11 +138,10 @@ bool isEmpty(struct node** front) {
 
 int main() {
     struct node* front = NULL;
-
     enqueue(&front, 10);
-    enqueue(&front, 5);
-    enqueue(&front, 3);
-    enqueue(&front, 2);
+    enqueue(&front, 10);
+    enqueue(&front, 10);
+    enqueue(&front, 10);
     dequeue(&front);
     dequeue(&front);
     dequeue(&front);
