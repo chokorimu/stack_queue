@@ -1,3 +1,6 @@
+#ifndef QUEUE_H
+#define QUEUE_H
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -7,9 +10,11 @@ struct node {
     struct node* next;
 };
 
-int head(struct node** head);
-int tail(struct node** head);
-void enqueue(struct node** head, int newValue);
-int dequeue(struct node** head);
-void iterate(struct node** head);
-bool isEmpty(struct node** head);
+int head(struct node** Queue);
+int tail(struct node** Queue);
+void enqueue(struct node** Queue, int element);
+int dequeue(struct node** Queue);
+void iterate(struct node** Queue);
+bool isEmpty(struct node** Queue);
+
+#endif
