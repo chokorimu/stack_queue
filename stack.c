@@ -1,11 +1,10 @@
-#include <stdio.h>
 #include "stack.h"
 
 void createStack(Stack *s) {
     s->top = -1;
 }
 
-bool isEmpty(Stack *s) {
+bool isEmptyStack(Stack *s) {
     return s->top == -1;
 }
 
@@ -24,7 +23,7 @@ void push(Stack *s, int value) {
 }
 
 int pop(Stack *s) {
-    if (isEmpty(s)) {
+    if (isEmptyStack(s)) {
         printf("Stack underflow! Tidak bisa pop\n");
         return -1;
     } else {
@@ -34,9 +33,8 @@ int pop(Stack *s) {
     }
 }
 
-
 int peek(Stack *s) {
-    if (isEmpty(s)) {
+    if (isEmptyStack(s)) {
         printf("Stack kosong\n");
         return -1;
     } else {

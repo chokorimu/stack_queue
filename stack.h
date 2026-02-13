@@ -1,6 +1,7 @@
 #ifndef STACK_H
 #define STACK_H
 
+#include <stdio.h>
 #include <stdbool.h>
 
 #define MAX 100
@@ -11,7 +12,7 @@ typedef struct {
 } Stack;
 
 void createStack(Stack *s);
-bool isEmpty(Stack *s);
+bool isEmptyStack(Stack *s);
 bool isFull(Stack *s);
 void push(Stack *s, int value);
 int pop(Stack *s);
