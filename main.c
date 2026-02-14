@@ -13,7 +13,7 @@ int main() {
     push(&s, 20);
     push(&s, 30);
     
-    printf("Peek: %d\n", peek(&s));
+    printf("Top: %d\n", top(&s));
     
     printf("Pop: %d\n", pop(&s));
     printf("Pop: %d\n", pop(&s));

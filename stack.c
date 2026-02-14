@@ -43,7 +43,7 @@ int pop(Stack *s) {
     return s->data[(s->top)--];
 }
 
-int peek(Stack *s) {
+int top(Stack *s) {
     if (isEmptyStack(s)) {
         printf("Stack kosong\n");
         return -1;
